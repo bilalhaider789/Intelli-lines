@@ -85,7 +85,7 @@ export default function Auth() {
 
                 <button
                   className=" text-[#327FD0]  hover:text-green-600 mt-[3%] underline"
-                  onClick={(e) => router.replace("/auth/auth")}
+                  onClick={(e) => router.replace("/auth")}
                 >
                   Back to Sign In
                 </button>
@@ -146,7 +146,7 @@ export default function Auth() {
 
                 <button
                   className=" text-[#327FD0]  hover:text-green-600 mt-[3%] underline"
-                  onClick={(e) => router.replace("/auth/auth")}
+                  onClick={(e) => router.replace("/auth")}
                 >
                   <div>Back to Sign In</div>
                 </button>

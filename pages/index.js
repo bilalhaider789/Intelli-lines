@@ -8,11 +8,12 @@ import { useState } from "react";
 
 export default function Home() {
   const[view,setview]=useState(true)
+  const maintail= " md:bg-blue-300 sm:bg-blue-600 bg-slate-600";
   return (
     <div>
       
       <div>
-        <div className="  md:bg-blue-300 sm:bg-blue-600 bg-slate-600">
+        <div className={maintail}>
           <div className="w-full py-16 text-white px-4">
             <div className="max-w-[1240px] mx-auto grid lg:grid-cols-4">
               <div className="lg:col-span-3 my-4 ">
