@@ -1,9 +1,16 @@
 import TextField from "@material-ui/core/TextField";
 import { useRef, useState } from "react";
 import Link from "next/link";
-import { useRouter } from "next/router";
+import Router, { useRouter } from "next/router";
+import LoadingModal from "../../components/others/LoadingModal";
+import { Modal } from "../../components/modal";
+
 export default function Auth() {
   const router = useRouter();
+  const [loading,setloading]=useState(false)
+  const [cmodal, setcmodal]=useState(false)
+  const [otp,setotp]=useState(null)
+  const [eerror,seteerror]=useState(false);
   const [screen, setscreen] = useState("forget");
   const [dig1,setdig1]=useState("");
   const [dig2,setdig2]=useState("");
@@ -12,21 +19,49 @@ export default function Auth() {
   const [email, setemail] = useState("");
   const [validemail, setvalidemail] = useState(true);
   const regEmail = new RegExp("^[a-zA-Z0-9._:$!%-]+@[a-zA-Z0-9.-]+.[a-zA-Z]$");
-  const onSubmit = (event) => {
+  
+  
+  const onSubmit = async(event) => {
     event.preventDefault();
     regEmail.test(email) ? setvalidemail(true) : setvalidemail(false);
     if (regEmail.test(email)) {
       console.log("Ready to Login");
-      setscreen("otp")
+      try{
+      setloading(true)
+      const response = await fetch("http://localhost:5000/forget", {
+        method: "POST",
+        body: JSON.stringify({email}),
+        headers: { "Content-Type": 'application/json' },
+      });
+      const data = await response.json();
+      setloading(false)
+      console.log(data);
+      if(data.success==true){
+        setscreen("otp")
+        setotp(data.otp)
+      }
+      if(data.success==false){
+        seteerror(true)
+      }
+    }catch(e){
+      setloading(false)
+       setcmodal(true)
+    }
     } else {
       console.log("Invalid Data");
     }
   };
+
+
   const verifyOtp=(event)=>{
     event.preventDefault();
-    console.log(dig1+dig2+dig3+dig4);
-    console.log((dig1+dig2+dig3+dig4)=="1111")
+    console.log((dig1+dig2+dig3+dig4)==otp)
+    if((dig1+dig2+dig3+dig4)==otp){
+      Router.replace({pathname: "/auth/resetpass", query: {email}})
+    }
   }
+
+
   return (
     <div>
       <div
@@ -69,12 +104,13 @@ export default function Auth() {
                       error={!validemail}
                       helperText={!validemail && "Please enter valid email"}
                       onChange={(e) => {
-                        setemail(e.target.value), setvalidemail(true);
+                        setemail(e.target.value), setvalidemail(true); seteerror(false)
                       }}
                     />
+                    {eerror && <div className="text-center text-red-600">*Account of this Email doesn't exists*</div>}
                     <div className="w-full flex justify-center mt-[5%]">
                       <button
-                        className="bg-[#2f9c5e] h-10 text-white rounded-xl w-[120px] hover:bg-[#11A683] text-xl"
+                        className="bg-[#14af4f] h-10 text-white rounded-xl w-[120px] hover:bg-[#32dd66] text-xl"
                         type="submit"
                       >
                         Send Code
@@ -104,6 +140,7 @@ export default function Auth() {
                 <form onSubmit={verifyOtp}>
                   <div className="flex justify-center mt-5 flex-row-reverse">
                     <input
+                      autocomplete="off"
                       type="text"
                       id="4"
                       maxLength="1"
@@ -111,6 +148,7 @@ export default function Auth() {
                       onKeyUp={(e) => {document.getElementById("4").blur();setdig4(e.target.value)}}
                     ></input>
                     <input
+                    autocomplete="off"
                       type="text"
                       id="3"
                       maxLength="1"
@@ -118,6 +156,7 @@ export default function Auth() {
                       onKeyUp={(e) => {focusevent("3", "4");setdig3(e.target.value)}}
                     ></input>
                     <input
+                    autocomplete="off"
                       type="text"
                       id="2"
                       maxLength="1"
@@ -125,6 +164,7 @@ export default function Auth() {
                       onKeyUp={(e) => {focusevent("2", "3");setdig2(e.target.value)}}
                     ></input>
                     <input
+                    autocomplete="off"
                       type="text"
                       id="1"
                       maxLength="1"
@@ -133,7 +173,7 @@ export default function Auth() {
                     ></input>
                   </div>
                   <div className="flex justify-end w-full pr-5">
-                    <button className=" text-[#327FD0]  hover:text-green-600 mt-[3%] underline">
+                    <button className=" text-[#327FD0]  hover:text-green-600 mt-[3%] underline" onClick={onSubmit}>
                       Resend Code
                     </button>
                   </div>
@@ -157,6 +197,10 @@ export default function Auth() {
           </div>
         </div>
       </div>
+      <LoadingModal state={loading}></LoadingModal>
+      {cmodal && <Modal onsubmit={setcmodal}>
+        
+        </Modal>}
     </div>
   );
 }

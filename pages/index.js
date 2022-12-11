@@ -5,10 +5,12 @@ import Button from "@material-ui/core/Button";
 import Slider from "@material-ui/core/Slider";
 import { Modal } from "../components/modal";
 import { useState } from "react";
+import Drawer from "@material-ui/core/Drawer";
 
 export default function Home() {
   const[view,setview]=useState(true)
   const maintail= " md:bg-blue-300 sm:bg-blue-600 bg-slate-600";
+
   return (
     <div>
       
@@ -82,8 +84,8 @@ export default function Home() {
         </div>
         Index page
       </div>
-      {view && <Modal >
-        <div className=" h-32 w-32 bg-white " onClick={(e)=>setview(false)}> i am modal</div>
+      {view && <Modal onsubmit={setview}>
+        
         </Modal>}
     </div>
   );
