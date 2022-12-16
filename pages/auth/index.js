@@ -10,11 +10,13 @@ import { useRouter } from "next/router";
 import { useSession, signOut } from "next-auth/react";
 import { CollectionsOutlined } from "@material-ui/icons";
 import Authcontext from "../../components/contexts/authcontext";
+import LoadingModal from "../../components/others/LoadingModal";
 
 export default function Auth() {
   const { data: session, status } = useSession();
   const router = useRouter();
   const [logintype, setlogintype] = useState(true);
+  const [loading,setloading]=useState(false)
   const ctx= useContext(Authcontext)
   useEffect(() => {
     const storedUserLoggedInInformation = localStorage.getItem("isLoggedIn");
@@ -22,6 +24,13 @@ export default function Auth() {
     if (storedUserLoggedInInformation === "1") {
       router.replace("/dashboard");
     }
+    // if (status === "authenticated") {
+    
+    //   setloading(true)
+  
+    // }
+  
+    
   }, []);
 
   const sociallogin= async()=>{
@@ -47,7 +56,10 @@ export default function Auth() {
   }
 
   if (status === "authenticated") {
+    
     sociallogin();
+    // setloading(true)
+
   }
 
   return (
@@ -91,6 +103,7 @@ export default function Auth() {
           </div>
         </div>
       </div>
+      <LoadingModal state={loading}></LoadingModal>
     </div>
   );
 }

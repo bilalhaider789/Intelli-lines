@@ -24,6 +24,9 @@ export default function Login() {
   const regEmail = new RegExp("^[a-zA-Z0-9._:$!%-]+@[a-zA-Z0-9.-]+.[a-zA-Z]$");
   const ctx= useContext(Authcontext)
   
+  
+
+
   const onSubmit = async (event) => {
     event.preventDefault();
     regEmail.test(email) ? setvalidemail(true) : setvalidemail(false);
