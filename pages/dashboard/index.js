@@ -1,16 +1,14 @@
 import { useRouter } from "next/router";
-import Loadingmodal from "../../components/others/LoadingModal";
 
 import { useState, useEffect, useContext, useDebugValue } from "react";
 import Authcontext from "../../components/contexts/authcontext";
-import TextField from "@material-ui/core/TextField";
-import InputAdornment from "@material-ui/core/InputAdornment";
-
+import Slider from "@mui/material/Slider";
 import { useSession, signOut } from "next-auth/react";
-import { IconButton, Menu, MenuItem } from "@material-ui/core";
+
+import IconButton from "@mui/material/IconButton";
 import { TfiMenu } from "react-icons/tfi";
-import { MdPersonOutline } from "react-icons/md";
-import { BsPersonCircle } from "react-icons/bs";
+import { MdOutlineCloudUpload, MdPersonOutline } from "react-icons/md";
+import { BsCloudUpload, BsPersonCircle } from "react-icons/bs";
 import { RiLogoutBoxRLine } from "react-icons/ri";
 import { RiPagesLine } from "react-icons/ri";
 import { MdOutlineFindInPage } from "react-icons/md";
@@ -18,28 +16,26 @@ import { MdVideoSettings } from "react-icons/md";
 import { GiCutDiamond } from "react-icons/gi";
 import { MdOutlineExtension } from "react-icons/md";
 
-import { RxCross2 } from "react-icons/rx";
-import { MdSettingsBackupRestore } from "react-icons/md";
-import VisibilityIcon from "@material-ui/icons/Visibility";
-import VisibilityOffIcon from "@material-ui/icons/VisibilityOff";
+import { GoCloudUpload } from "react-icons/go";
 
 import LoadingModal from "../../components/others/LoadingModal";
 import Profile from "../../components/dashboard/profile";
-
+import VideoSummarizer from "../../components/dashboard/videosummarizer";
 export default function Dashboard() {
   const router = useRouter();
   const ctx = useContext(Authcontext);
   const { data: session, status } = useSession();
   const [drop, setdrop] = useState(false);
   const [side, setside] = useState(true);
-  const [username,setusername]=useState("")
-  const [useremail,setuseremail]=useState("")
-  const [loading,setloading]=useState(false)
+  const [username, setusername] = useState("");
+  const [useremail, setuseremail] = useState("");
+  const [loading, setloading] = useState(false);
+  const [screen, setscreen] = useState("video");
 
-  useEffect(()=>{
-    setuseremail(localStorage.getItem("email"))
-    setusername(localStorage.getItem("username"))
-  })
+  useEffect(() => {
+    setuseremail(localStorage.getItem("email"));
+    setusername(localStorage.getItem("username"));
+  });
 
   return (
     <div>
@@ -51,7 +47,7 @@ export default function Dashboard() {
       >
         <div>
           <IconButton className="" onClick={() => setside(!side)}>
-            <TfiMenu className="fill-black h-16 w-8" />
+            <TfiMenu className="text-black h-16 w-8" />
           </IconButton>
         </div>
         <div className="flex ">
@@ -68,7 +64,7 @@ export default function Dashboard() {
               {username}
             </div>
             <IconButton
-              className=" bg-black h-12 "
+              className=" h-12 "
               onMouseEnter={() => setdrop(true)}
               onMouseLeave={() => setdrop(false)}
             >
@@ -86,19 +82,19 @@ export default function Dashboard() {
                 <div>{useremail}</div>
               </div>
               <div
-                className="border-t-2 border-b-2 mt-2 mb-1 flex items-center py-2"
+                className="border-t-2 border-b-2 mt-2 mb-1 flex items-center py-2 cursor-pointer hover:bg-blue-200"
                 onClick={() => {
-                  console.log("accout");
+                  setscreen("account");
                 }}
               >
                 <BsPersonCircle className="w-6 h-6 mr-2 ml-1" />
                 Account Details
               </div>
               <div
-                className="flex items-center cursor-pointer hover:bg-red-400"
+                className="flex items-center cursor-pointer hover:bg-blue-200"
                 onClick={() => {
                   ctx.logout();
-                  setloading(true)
+                  setloading(true);
                   signOut({ callbackUrl: "http://localhost:3000/auth" });
                 }}
               >
@@ -112,23 +108,63 @@ export default function Dashboard() {
       <div className="  w-screen h-screen pt-10 mx-auto grid lg:grid-cols-6">
         {side && (
           <div className="lg:col-span-1 pt-4 bg-gray text-[20px] flex flex-col hover:cursor-pointer  bg-gray-100">
-            <div className="border-y-2 py-4 hover:bg-[#2fcf2c] hover:text-white px-10 flex items-center">
+            <div
+              className="border-y-2 py-4 hover:bg-[#38f034] hover:text-white px-2 flex items-center"
+              style={
+                screen == "video"
+                  ? { backgroundColor: "#2fcf2c", color: "white" }
+                  : {}
+              }
+              onClick={() => setscreen("video")}
+            >
               <MdVideoSettings className="w-10 h-8 mr-2 text-red-600" />
               <p> Video Summarizer</p>
             </div>
-            <div className="border-y-1 py-4 hover:bg-[#2fcf2c] hover:text-white px-10 flex items-center">
+            <div
+              className="border-y-1 py-4 hover:bg-[#38f034] hover:text-white px-2 flex items-center"
+              style={
+                screen == "text"
+                  ? { backgroundColor: "#2fcf2c", color: "white" }
+                  : {}
+              }
+              onClick={() => setscreen("text")}
+            >
               <RiPagesLine className="w-10 h-8 mr-2 text-orange-500" />
               Text Summarizer
             </div>
-            <div className="border-y-2 py-4 hover:bg-[#2fcf2c] hover:text-white px-10 flex items-center">
+            <div
+              className="border-y-2 py-4 hover:bg-[#38f034] hover:text-white px-2 flex items-center"
+              style={
+                screen == "ocr"
+                  ? { backgroundColor: "#2fcf2c", color: "white" }
+                  : {}
+              }
+              onClick={() => setscreen("ocr")}
+            >
               <MdOutlineFindInPage className="w-10 h-8 mr-2 text-green-600" />
               Text Extractor OCR
             </div>
-            <div className="border-y-1 py-4 hover:bg-[#2fcf2c] hover:text-white px-10 flex items-center">
+            <div
+              className="border-y-1 py-4 hover:bg-[#38f034] hover:text-white px-2 flex items-center"
+              style={
+                screen == "premium"
+                  ? { backgroundColor: "#2fcf2c", color: "white" }
+                  : {}
+              }
+              onClick={() => setscreen("premium")}
+            >
               <GiCutDiamond className="w-10 h-8 mr-2 text-[#e7e733]" />
               Premium Version
             </div>
-            <div className="border-y-2 py-4 hover:bg-[#2fcf2c] hover:text-white px-10 flex items-center">
+            <div
+              className="border-y-2 py-4 hover:bg-[#38f034] hover:text-white px-2 flex items-center"
+              style={
+                screen == "extension"
+                  ? { backgroundColor: "#2fcf2c", color: "white" }
+                  : {}
+              }
+              onClick={() => setscreen("extension")}
+            >
               <MdOutlineExtension className="w-10 h-8 mr-2 text-blue-400" />
               Chrome Extension
             </div>
@@ -142,14 +178,13 @@ export default function Dashboard() {
               : `lg:col-span-6  mt-4 flex flex-col `
           }
         >
-          <Profile session={session}></Profile>
+          {screen == "account" && <Profile session={session}></Profile>}
+          <VideoSummarizer/>
           
         </div>
       </div>
-    
-    
-    <LoadingModal state={loading}></LoadingModal>
+
+      <LoadingModal state={loading}></LoadingModal>
     </div>
   );
 }
-

@@ -1,8 +1,9 @@
-import TextField from "@material-ui/core/TextField";
-import InputAdornment from "@material-ui/core/InputAdornment";
-import IconButton from "@material-ui/core/IconButton";
-import VisibilityIcon from "@material-ui/icons/Visibility";
-import VisibilityOffIcon from "@material-ui/icons/VisibilityOff";
+
+import TextField from '@mui/material/TextField';
+import InputAdornment from '@mui/material/InputAdornment';
+import IconButton from '@mui/material/IconButton';
+import { MdVisibilityOff } from "react-icons/md";
+import { MdVisibility } from "react-icons/md";
 import { useState,useEffect,useContext } from "react";
 import { useRouter } from "next/router";
 import React from "react";
@@ -135,7 +136,7 @@ async function HandleGitSignIn(){
                         setvisible(!visible);
                       }}
                     >
-                      {visible ? <VisibilityOffIcon /> : <VisibilityIcon />}
+                      {visible ? <MdVisibilityOff /> : <MdVisibility />}
                     </IconButton>
                   </InputAdornment>
                 ),

@@ -1,8 +1,8 @@
-import TextField from "@material-ui/core/TextField";
-import InputAdornment from "@material-ui/core/InputAdornment";
-import IconButton from "@material-ui/core/IconButton";
-import VisibilityIcon from "@material-ui/icons/Visibility";
-import VisibilityOffIcon from "@material-ui/icons/VisibilityOff";
+import TextField from '@mui/material/TextField';
+import InputAdornment from '@mui/material/InputAdornment';
+import IconButton from '@mui/material/IconButton';
+import { MdVisibilityOff } from "react-icons/md";
+import { MdVisibility } from "react-icons/md";
 import { useState,useContext } from "react";
 import LoadingModal from "../../components/others/LoadingModal";
 import { useRouter } from "next/router";
@@ -103,11 +103,7 @@ export default function ResetPass() {
                                 setvisible(!visible);
                               }}
                             >
-                              {visible ? (
-                                <VisibilityOffIcon />
-                              ) : (
-                                <VisibilityIcon />
-                              )}
+                              {visible ?  <MdVisibilityOff /> : <MdVisibility />}
                             </IconButton>
                           </InputAdornment>
                         ),
@@ -138,11 +134,7 @@ export default function ResetPass() {
                                 setcvisible(!cvisible);
                               }}
                             >
-                              {cvisible ? (
-                                <VisibilityOffIcon />
-                              ) : (
-                                <VisibilityIcon />
-                              )}
+                              {cvisible ? <MdVisibilityOff /> : <MdVisibility />}
                             </IconButton>
                           </InputAdornment>
                         ),

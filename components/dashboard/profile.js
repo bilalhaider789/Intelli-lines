@@ -3,8 +3,12 @@ import { useState, useEffect, useContext, useDebugValue } from "react";
 import { MdSettingsBackupRestore } from "react-icons/md";
 
 import { RxCross2 } from "react-icons/rx";
-import TextField from "@material-ui/core/TextField";
+import TextField from '@mui/material/TextField';
+import InputAdornment from '@mui/material/InputAdornment';
 
+import IconButton from '@mui/material/IconButton';
+import { MdVisibilityOff } from "react-icons/md";
+import { MdVisibility } from "react-icons/md";
 
 export default function Profile(props){
 
@@ -17,6 +21,7 @@ export default function Profile(props){
   const [editname,seteditname]= useState("")
   const [passmodal,setpassmodal]=useState(false)
   const [editpass,seteditpass]= useState("")
+  const [visible,setvisible]=useState(false)
 
   useEffect(()=>{
     setuseremail(localStorage.getItem("email"))
@@ -176,19 +181,13 @@ export default function Profile(props){
                         setvisible(!visible);
                       }}
                     >
-                      {visible ? <VisibilityOffIcon /> : <VisibilityIcon />}
+                      {visible ? <MdVisibilityOff /> : <MdVisibility />}
                     </IconButton>
                   </InputAdornment>
                 ),
               }}
-              error={!validpassword}
-              helperText={
-                !validpassword && "Password can't be less than 5 characters"
-              }
               onChange={(e) => {
                 seteditpass(e.target.value);
-                // setvalidpassword(true);
-                // seteerror(false)
               }}
             />
         <button

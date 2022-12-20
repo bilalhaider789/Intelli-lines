@@ -1,14 +1,9 @@
-import TextField from "@material-ui/core/TextField";
-import InputAdornment from "@material-ui/core/InputAdornment";
-import IconButton from "@material-ui/core/IconButton";
-import VisibilityIcon from "@material-ui/icons/Visibility";
-import VisibilityOffIcon from "@material-ui/icons/VisibilityOff";
+
 import { useState, useEffect,useContext } from "react";
 import Login from "../../components/auth/login";
 import Signup from "../../components/auth/signup";
 import { useRouter } from "next/router";
 import { useSession, signOut } from "next-auth/react";
-import { CollectionsOutlined } from "@material-ui/icons";
 import Authcontext from "../../components/contexts/authcontext";
 import LoadingModal from "../../components/others/LoadingModal";
 
