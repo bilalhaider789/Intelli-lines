@@ -30,7 +30,7 @@ export default function Auth() {
 
   const sociallogin= async()=>{
     try {
-      const response = await fetch("http://localhost:5000/social", {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_NODE}social`, {
         method: "PATCH",
         body: JSON.stringify({
           email: session.user.email,
@@ -53,7 +53,6 @@ export default function Auth() {
   if (status === "authenticated") {
     
     sociallogin();
-    // setloading(true)
 
   }
 

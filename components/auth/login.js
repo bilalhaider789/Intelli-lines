@@ -34,9 +34,9 @@ export default function Login() {
     password.length > 5 ? setvalidpassword(true) : setvalidpassword(false);
     if (regEmail.test(email) && password.length > 5) {
         try{
-        console.log("Ready to Login");
         setloading(true)
-        const response = await fetch("http://localhost:5000/login", {
+        
+        const response = await fetch(`${process.env.NEXT_PUBLIC_NODE}login`, {
           method: "POST",
           body: JSON.stringify({email, password }),
           headers: { "Content-Type": 'application/json' },
@@ -65,15 +65,15 @@ export default function Login() {
 
   async function HandleGoogleSignIn(){
     setloading(true)
-    signIn('google')
+    signIn('google',{callbackUrl:`${process.env.NEXT_PUBLIC_DOMAIN}dashboard`})
 }
 async function HandleFBSignIn(){
   setloading(true)  
-  signIn('facebook')
+  signIn('facebook',{callbackUrl: `${process.env.NEXT_PUBLIC_DOMAIN}dashboard`})
 }
 async function HandleGitSignIn(){
   setloading(true)  
-  signIn('github')
+  signIn('github',{callbackUrl:`${process.env.NEXT_PUBLIC_DOMAIN}dashboard`})
 }
 
 

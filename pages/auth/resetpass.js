@@ -30,7 +30,7 @@ export default function ResetPass() {
       try{
       setloading(true);
       console.log(123)
-      const response = await fetch("http://localhost:5000/resetpass", {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_NODE}resetpass`, {
         method: "PATCH",
         body: JSON.stringify({ email: email, password }),
         headers: { "Content-Type": "application/json" },

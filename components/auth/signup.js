@@ -8,6 +8,7 @@ import { useRouter } from "next/router";
 import LoadingModal from "../others/LoadingModal";
 import { Modal } from "../modal";
 import Authcontext from "../contexts/authcontext"
+import {signIn} from "next-auth/react"
 
 export default function Signup() {
   const router= useRouter()
@@ -33,7 +34,7 @@ export default function Signup() {
       console.log("Ready to Login");
       setloading(true)
       try{
-      const response = await fetch("http://localhost:5000/signup", {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_NODE}signup`, {
         method: "POST",
         body: JSON.stringify({ name, email, password }),
         headers: { "Content-Type": 'application/json' },
@@ -59,13 +60,13 @@ export default function Signup() {
   };
 
   async function HandleGoogleSignIn(){
-    signIn('google')
+    signIn('google',{callbackUrl:`${process.env.NEXT_PUBLIC_DOMAIN}dashboard`})
 }
 async function HandleFBSignIn(){
-    signIn('facebook')
+    signIn('facebook',{callbackUrl:`${process.env.NEXT_PUBLIC_DOMAIN}dashboard`})
 }
 async function HandleGitSignIn(){
-    signIn('github')
+    signIn('github',{callbackUrl:`${process.env.NEXT_PUBLIC_DOMAIN}dashboard`})
 }
 
   return (

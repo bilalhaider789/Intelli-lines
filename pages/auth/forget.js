@@ -28,7 +28,7 @@ export default function Auth() {
       console.log("Ready to Login");
       try{
       setloading(true)
-      const response = await fetch("http://localhost:5000/forget", {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_NODE}forget`, {
         method: "POST",
         body: JSON.stringify({email}),
         headers: { "Content-Type": 'application/json' },

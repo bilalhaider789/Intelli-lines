@@ -30,7 +30,7 @@ export default function Profile(props){
 
   const changepassword=async()=>{
     try{
-      const response = await fetch("http://localhost:5000/changepass", {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_NODE}changepass`, {
         method: "PATCH",
         body: JSON.stringify({ email: useremail, password: editpass }),
         headers: { "Content-Type": "application/json" },
