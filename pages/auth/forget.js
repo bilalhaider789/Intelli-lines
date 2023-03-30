@@ -140,7 +140,7 @@ export default function Auth() {
                 <form onSubmit={verifyOtp}>
                   <div className="flex justify-center mt-5 flex-row-reverse">
                     <input
-                      autocomplete="off"
+                      autoComplete="off"
                       type="text"
                       id="4"
                       maxLength="1"
@@ -148,7 +148,7 @@ export default function Auth() {
                       onKeyUp={(e) => {document.getElementById("4").blur();setdig4(e.target.value)}}
                     ></input>
                     <input
-                    autocomplete="off"
+                    autoComplete="off"
                       type="text"
                       id="3"
                       maxLength="1"
@@ -156,7 +156,7 @@ export default function Auth() {
                       onKeyUp={(e) => {focusevent("3", "4");setdig3(e.target.value)}}
                     ></input>
                     <input
-                    autocomplete="off"
+                    autoComplete="off"
                       type="text"
                       id="2"
                       maxLength="1"
@@ -164,7 +164,7 @@ export default function Auth() {
                       onKeyUp={(e) => {focusevent("2", "3");setdig2(e.target.value)}}
                     ></input>
                     <input
-                    autocomplete="off"
+                    autoComplete="off"
                       type="text"
                       id="1"
                       maxLength="1"

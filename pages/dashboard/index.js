@@ -24,6 +24,8 @@ import Profile from "../../components/dashboard/profile";
 import VideoSummarizer from "../../components/dashboard/videosummarizer";
 import TextSummarizer from "../../components/dashboard/textsummarizer";
 import OCRExtractor from "../../components/dashboard/ocrextractor";
+import Premium from "../../components/dashboard/premium";
+import History from "../../components/dashboard/history";
 
 export default function Dashboard() {
   const router = useRouter();
@@ -34,12 +36,49 @@ export default function Dashboard() {
   const [username, setusername] = useState("");
   const [useremail, setuseremail] = useState("");
   const [loading, setloading] = useState(false);
-  const [screen, setscreen] = useState("text");
+  const [screen, setscreen] = useState("history");
 
   useEffect(() => {
+
     setuseremail(localStorage.getItem("email"));
     setusername(localStorage.getItem("username"));
+    
   });
+
+  useEffect(() => {
+
+    if (status === "authenticated") {
+    
+      sociallogin();
+  
+    }
+  },[status]);
+  
+
+  const sociallogin= async()=>{
+    try {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_NODE}social`, {
+        method: "PATCH",
+        body: JSON.stringify({
+          email: session.user.email,
+          name: session.user.name,
+        }),
+        headers: { "Content-Type": "application/json" },
+      });
+      const data = await response.json();
+      console.log(data)
+      if (data.success==true){
+        ctx.login(data);
+        console.log("abc");
+        router.replace("/dashboard");
+      }
+    } catch (e) {
+      console.log("error")
+    }
+  }
+
+
+  
 
   return (
     <div>
@@ -197,7 +236,9 @@ export default function Dashboard() {
           {screen == "account" && <Profile session={session}></Profile>}
           {screen =="video" && <VideoSummarizer/>}
           {screen =="text" && <TextSummarizer/>}
-          {screen =="ocr" && <OCRExtractor/>}  
+          {screen =="ocr" && <OCRExtractor/>}
+          {screen =="premium" && <Premium/>} 
+          {screen =="history" && <History/>}  
           
         </div>
       </div>

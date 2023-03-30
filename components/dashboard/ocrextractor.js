@@ -13,7 +13,7 @@ import { defaultLayoutPlugin } from "@react-pdf-viewer/default-layout";
 import "@react-pdf-viewer/default-layout/lib/styles/index.css";
 
 export default function OCRExtractor() {
-  const [screen, setscreen] = useState("result");
+  const [screen, setscreen] = useState("upload");
   const [files, setFiles] = useState([]);
   const [pdffile, setpdfFile] = useState(null);
 
@@ -158,7 +158,7 @@ export default function OCRExtractor() {
                 </div>
                 <div className="mr-2 mt-2 border-2 p-2 rounded-xl shadow-lg bg-[#34bd32] text-white text-[17px] cursor-pointer" onClick={()=>screenchange()}>Scan more...</div>
               </div>
-              <div className="w-[95%] h-[570px] border-2 border-gray-300 mt-4 rounded-xl p-4 overflow-auto text-justify">
+              <div className="w-[95%] h-[450px] border-2 border-gray-300 mt-4 rounded-xl p-4 overflow-auto text-justify">
               Born to a Niazi Pashtun family in Lahore, Khan graduated from Keble College, University of Oxford, England, in 1975. Khan played until 1992, served as the team's captain intermittently between 1982 and 1992,[5] and won the 1992 Cricket World Cup, in what is Pakistan's first and only victory in the competition. Considered one of cricket's greatest all-rounders,[6][7] Khan scored 3,807 runs and took 362 wickets in Test cricket and was inducted into the ICC Cricket Hall of Fame. Khan founded cancer hospitals in Lahore and Peshawar,[8] and Namal College in Mianwali,[9][10] prior to entering politics.[11][12] Founding the PTI in 1996, Khan won a seat in the National Assembly in the 2002 general election, serving as an opposition member from Mianwali until 2007. As Prime Minister, Khan addressed a balance of payments cBorn to a Niazi Pashtun family in Lahore, Khan graduated from Keble College, University of Oxford, England, in 1975. Khan played until 1992, served as the team's captain intermittently between 1982 and 1992,[5] and won the 1992 Cricket World Cup, in what is Pakistan's first and only victory in the competition. Considered one of cricket's greatest all-rounders,[6][7] Khan scored 3,807 runs and took 362 wickets in Test cricket and was inducted into the ICC Cricket Hall of Fame. Khan founded cancer hospitals in Lahore and Peshawar,[8] and Namal College in Mianwali,[9][10] prior to entering politics.[11][12] Founding the PTI in 1996, Khan won a seat in the National Assembly in the 2002 general election, serving as an opposition member from Mianwali until 2007. As Prime Minister, Khan addressed a balance of payments crisis with bailouts from the International Monetary Fund.[15] He presided over a shrinking current account de
               Born to a Niazi Pashtun family in Lahore, Khan graduated from Keble College, University of Oxford, England, in 1975. Khan played until 1992, served as the team's captain intermittently between 1982 and 1992,[5] and won the 1992 Cricket World Cup, in what is Pakistan's first and only victory in the competition. Considered one of cricket's greatest all-rounders,[6][7] Khan scored 3,807 runs and took 362 wickets in Test cricket and was inducted into the ICC Cricket Hall of Fame. Khan founded cancer hospitals in Lahore and Peshawar,[8] and Namal College in Mianwali,[9][10] prior to entering politics.[11][12] Founding the PTI in 1996, Khan won a seat in the National Assembly in the 2002 general election, serving as an opposition member from Mianwali until 2007. As Prime Minister, Khan addressed a balance of payments cBorn to a Niazi Pashtun family in Lahore, Khan graduated from Keble College, University of Oxford, England, in 1975. Khan played until 1992, served as the team's captain intermittently between 1982 and 1992,[5] and won the 1992 Cricket World Cup, in what is Pakistan's first and only victory in the competition. Considered one of cricket's greatest all-rounders,[6][7] Khan scored 3,807 runs and took 362 wickets in Test cricket and was inducted into the ICC Cricket Hall of Fame. Khan founded cancer hospitals in Lahore and Peshawar,[8] and Namal College in Mianwali,[9][10] prior to entering politics.[11][12] Founding the PTI in 1996, Khan won a seat in the National Assembly in the 2002 general election, serving as an opposition member from Mianwali until 2007. As Prime Minister, Khan addressed a balance of payments crisis with bailouts from the International Monetary Fund.[15] He presided over a shrinking current account de
               </div>
@@ -166,10 +166,10 @@ export default function OCRExtractor() {
                 <p className="font-semibold text-[18px] ml-2"> 50 Sentences, 1500 words</p>
                 <div className="flex ">
                 <p className="border-2 rounded-2xl px-2 py-1 text-[18px] border-black cursor-pointer bg-gray-200 hover:bg-[#38f034] hover:text-white">
-                  Download in PDF
+                  Save
                 </p>
                 <p className="border-2 rounded-2xl px-2 mx-2 py-1 text-[18px] border-black cursor-pointer bg-gray-200 hover:bg-[#38f034] hover:text-white">
-                  Download in Word
+                  Download in PDF
                 </p>
               </div>
 
@@ -184,7 +184,7 @@ export default function OCRExtractor() {
                 Replace All
               </div>
             </div>
-            <div className="w-[95%] h-[630px]  overflow-auto border-2 border-gray-300 mt-4 p-2 rounded-xl flex flex-col items-center">
+            <div className="w-[95%] h-[500px]  overflow-auto border-2 border-gray-300 mt-4 p-2 rounded-xl flex flex-col items-center">
               
               {mistakes.map((item)=>
               <div className="flex justify-between bg-slate-100 rounded-xl pr-4 pl-4 py-2 items-center my-2 w-[95%]">

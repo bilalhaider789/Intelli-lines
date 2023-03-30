@@ -10,7 +10,7 @@ import IconButton from '@mui/material/IconButton';
 import { MdVisibilityOff } from "react-icons/md";
 import { MdVisibility } from "react-icons/md";
 
-export default function Profile(props){
+export default function Profile(props){ 
 
     const session = props.session
     const [username,setusername]=useState("")

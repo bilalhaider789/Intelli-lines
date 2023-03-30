@@ -1,5 +1,3 @@
-import { Dialog } from "@headlessui/react";
-import { useRef } from "react";
 
 export function Modal(props) {
   

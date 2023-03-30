@@ -13,10 +13,12 @@ export default function Auth() {
   const [logintype, setlogintype] = useState(true);
   const [loading,setloading]=useState(false)
   const ctx= useContext(Authcontext)
+  let storedUserLoggedInInformation=""
   useEffect(() => {
-    const storedUserLoggedInInformation = localStorage.getItem("isLoggedIn");
+     storedUserLoggedInInformation = localStorage.getItem("isLoggedIn");
 
     if (storedUserLoggedInInformation === "1") {
+      setloading(true)
       router.replace("/dashboard");
     }
     // if (status === "authenticated") {
@@ -26,7 +28,7 @@ export default function Auth() {
     // }
   
     
-  }, []);
+  }, [storedUserLoggedInInformation]);
 
   const sociallogin= async()=>{
     try {

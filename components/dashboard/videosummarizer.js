@@ -1,8 +1,12 @@
 import { Box, Slider } from "@mui/material";
 import { useState } from "react";
+import { BsCartCheck } from "react-icons/bs";
 import { GoCloudUpload } from "react-icons/go";
 import { MdOutlineSummarize, MdSummarize } from "react-icons/md";
+import LoadingModal from "../others/LoadingModal";
 import Inputslider from "./inputslider";
+
+import { MessageModal } from "../others/MessageModal";
 
 export default function VideoSummarizer() {
   const [videourl, setvideourl] = useState("");
@@ -10,9 +14,19 @@ export default function VideoSummarizer() {
   const [vfile, setvfile] = useState("");
   const [youtubelink, setyoutubelink] = useState("");
   const [language, setlanguage] = useState("eng");
+  const [rlanguage, setrlanguage] = useState("eng");
   const [sumtype, setsumtype] = useState("key");
+  const [rsumtype, setrsumtype]=useState("key");
   const [resulttype, setresultype] = useState("sum");
   const [sumRatio, setsumRatio]= useState(20)
+  const [script,setscript]=useState("")
+  const [result, setresult]=useState("")
+  const [keywords, setkeywords]=useState([])
+  const [points, setpoints]=useState([])
+  const [loading,setloading]=useState(false)
+  const [errormess, seterrormess]=useState("")
+  const [error, seterror]=useState(false)
+  const [stats, setstats]=useState([0,0])
 
   const handleChange = (event) => {
     try {
@@ -40,6 +54,63 @@ export default function VideoSummarizer() {
   const changeRatio = (e) => {
     setsumRatio(e)
   };
+
+
+  const youtubesum=async()=>{
+    setloading(true)
+    try{
+      var ytcode = videourl.split("=")[1].split("&")[0];
+    const response = await fetch(`${process.env.NEXT_PUBLIC_FLASK}video_sum` , {
+        method: "POST",
+        body: JSON.stringify({"code": ytcode, "sumRatio": sumRatio, "sumtype":sumtype, "language": language }),
+        headers: { "Content-Type": 'application/json' },
+      })
+    const data = await response.json();
+    if(data.success =="1"){
+    setscript(data.script)
+    // setresult(data.summary)
+    setkeywords(JSON.parse(data.keywords))
+    console.log(JSON.parse(data.keywords))
+    console.log(typeof(JSON.parse(data.keywords)))
+    setrlanguage(language)
+    setrsumtype(sumtype)
+    if (sumtype=="key"){
+      const summary=data.summary
+      let p_summary=[]
+      if (language=="eng"){
+        p_summary= summary.split(/[.]/)}
+      else {
+        p_summary= summary.split(/[۔]/)
+      }
+      setpoints(p_summary)
+      setloading(false)
+      let demostats= [0,0]
+      demostats[0]=data.summary.split(/[.?!۔]+/).length
+      demostats[1]=data.summary.split(/\s+/).filter((word) => word !== "").length
+      setstats(demostats)
+    }
+    else{
+      let demostats= [0,0]
+      setresult(data.summary)
+      demostats[0]=data.summary.split(/[.?!۔]+/).length
+      demostats[1]=data.summary.split(/\s+/).filter((word) => word !== "").length
+      setstats(demostats)
+      setloading(false)
+    }
+  }
+  else{
+    console.log(data.message)
+    seterror(true)
+    seterrormess(data.message)
+    setloading(false)
+  }
+  }
+    catch(e){
+      console.log(e)
+      setloading(false)
+    }
+    
+  }
 
   return (
     <div className="bg-blue-100 h-full w-full flex justify-center items-center font-['Poppins']">
@@ -84,7 +155,7 @@ export default function VideoSummarizer() {
             </div>
             {uploadtype == "" && (
               <div>
-                <div className="w-full text-center text-[20px] text-gray-500">
+                {/* <div className="w-full text-center text-[20px] text-gray-500">
                   or
                 </div>
 
@@ -98,7 +169,7 @@ export default function VideoSummarizer() {
                     <GoCloudUpload className="w-24 h-14 text-gray-700" />
                     <p className="font-[poppins] text-[18px]">Upload Video</p>
                   </div>
-                </div>
+                </div> */}
               </div>
             )}
             {uploadtype == "youtube" && (
@@ -134,12 +205,12 @@ export default function VideoSummarizer() {
                 <div
                   className="border-2 w-28 text-center border-slate-500 hover:cursor-pointer   rounded-r-xl"
                   style={
-                    sumtype == "sum"
+                    sumtype == "para"
                       ? { backgroundColor: "gray", color: "white" }
                       : {}
                   }
                   onClick={(e) => {
-                    setsumtype("sum");
+                    setsumtype("para");
                   }}
                 >
                   Paragraph
@@ -203,7 +274,7 @@ export default function VideoSummarizer() {
                 <GoCloudUpload className="w-10 h-7 text-gray-500" />
                 Extract Script
               </div> */}
-              <div className="border-4 rounded-2xl px-2 py-1 flex items-center hover:cursor-pointer hover:bg-[#38f034]  text-xl">
+              <div className="border-4 rounded-2xl px-2 py-1 flex items-center hover:cursor-pointer hover:bg-[#38f034]  text-xl" onClick={()=>{uploadtype=="youtube"? youtubesum(): console.log("local function ")}}>
                 {" "}
                 <MdOutlineSummarize className="w-10 h-7 text-gray-500" />{" "}
                 Summarize
@@ -211,21 +282,15 @@ export default function VideoSummarizer() {
             </div>
             <div className="flex flex-wrap mt-4 w-full px-4 gap-y-2 cursor-pointer">
               <p className=" pl-2 mx-2 text-[18px] font-semibold text-green-700">Keywords:</p>
-              <p className="border-2 rounded-2xl px-2 mx-2 border-black">imran</p>
-              <p className="border-2 rounded-2xl px-2 mx-2 border-black">khan</p>
-              <p className="border-2 rounded-2xl px-2 mx-2 border-black">Keywords:</p>
-              <p className="border-2 rounded-2xl px-2 mx-2 border-black">imran</p>
-              <p className="border-2 rounded-2xl px-2 mx-2 border-black">khan</p>
-              <p className="border-2 rounded-2xl px-2 mx-2 border-black">Keywords:</p>
-              <p className="border-2 rounded-2xl px-2 mx-2 border-black">imran</p>
-              <p className="border-2 rounded-2xl px-2 mx-2 border-black">khan</p>
-              <p className="border-2 rounded-2xl px-2 mx-2 border-black">Keywords:</p>
-              <p className="border-2 rounded-2xl px-2 mx-2 border-black">imran</p>
-              <p className="border-2 rounded-2xl px-2 mx-2 border-black">khan</p>
+              {
+                keywords.map(item => <p className="border-2 rounded-2xl px-2 py-1 mx-2 border-black  font-urdu ">
+                {item}
+              </p>)
+              }
             </div>
           </div>
           <div className="h-full w-full flex flex-col items-center">
-            <div className="w-[80%] flex flex-col  font-semibold">
+            {/* <div className="w-[80%] flex flex-col  font-semibold">
               <p className="ml-4 my-4">
                 Extracted Clean Audio of Provided Video :
               </p>
@@ -234,8 +299,8 @@ export default function VideoSummarizer() {
                 src="/audio/a1.mp3"
                 className=" text-green-500 w-full"
               />
-            </div>
-            <div className=" w-[95%] h-[430px] mt-4 border-2 rounded-xl">
+            </div> */}
+            <div className=" w-[95%] h-[530px] mt-4 border-2 rounded-xl">
               <div className=" flex ml-4 text-[18px] cursor-pointer">
                 <p
                   className="mr-4 pr-4 border-r-2 "
@@ -263,60 +328,40 @@ export default function VideoSummarizer() {
                   Script
                 </p>
               </div>
-              {resulttype == "sum" && (
-                <div className="w-full h-[400px] overflow-auto px-4 py-4">
-                  Born to a Niazi Pashtun family in Lahore, Khan graduated from
-                  Keble College, University of Oxford, England, in 1975. He
-                  began his international cricket career at age 18, in a 1971
-                  Test series against England. Khan played until 1992, served as
-                  the team's captain intermittently between 1982 and 1992,[5]
-                  and won the 1992 Cricket World Cup, in what is Pakistan's
-                  first and only victory in the competition. Considered one of
-                  cricket's greatest all-rounders,[6][7] Khan scored 3,807 runs
-                  and took 362 wickets in Test cricket and was inducted into the
-                  ICC Cricket Hall of Fame. Khan founded cancer hospitals in
-                  Lahore and Peshawar,[8] and Namal College in Mianwali,[9][10]
-                  prior to entering politics.[11][12] Founding the PTI in 1996,
-                  Khan won a seat in the National Assembly in the 2002 general
-                  election, serving as an opposition member from Mianwali until
-                  2007. PTI boycotted the 2008 general election and became the
-                  second-largest party by popular vote in the 2013 general
-                  election.[13][14] In the 2018 general election, running on a
-                  populist platform, PTI became the largest party in the
-                  National Assembly, and formed a coalition government with
-                  independents with Khan as Prime Minister. As Prime Minister,
-                  Khan addressed a balance of payments crisis with bailouts from
-                  the International Monetary Fund.[15] He presided over a
-                  shrinking current account deficit,[16][17] and limited defence
-                  spending to curtail the fiscal deficit, leading to some
-                  general economic growth.[18][19][20] He enacted policies that
-                  increased tax collection,[21][22] and investment.[23] His
-                  government committed to a renewable energy transition,
-                  launched the Ehsaas Programme and the Plant for Pakistan
-                  initiative, and expanded the protected areas of Pakistan. He
-                  presided over the COVID-19 pandemic, which caused economic
-                  turmoil and rising inflation in the country, and threatened
-                  his political position.[24] Despite a promised anti-corruption
-                  campaign, the perception of corruption in Pakistan worsened
-                  during Khan's time in office.[25] He was accused of political
-                  victimisation of opponents and clamping down on freedom of
-                  expression and dissent.[26]
+              {(resulttype == "sum" && rlanguage=="eng" && rsumtype=="key") && (
+                <div className="w-full h-[500px] overflow-auto px-4 py-4 text-justify">
+                  {points.map(item => item!="" && <p> ◉ {item}.</p>)}
+                </div>
+              )}
+              {(resulttype == "sum" && rlanguage=="eng" && rsumtype=="para") && (
+                <div className="w-full h-[500px] overflow-auto px-4 py-4 text-justify">
+                  <p> {result}</p>
+                </div>
+              )}
+              {(resulttype == "sum" && rlanguage=="ur" && rsumtype=="key") && (
+                <div className="w-full h-[500px] overflow-auto px-4 py-4 text-right font-urdu">
+                  {points.map(item => item != "" && <p>  {item} ◉</p>)}
+                </div>
+              )}
+              {(resulttype == "sum" && rlanguage=="ur" && rsumtype=="para") && (
+                <div className="w-full h-[500px] overflow-auto px-4 py-4 text-right font-urdu">
+                  <p> {result}</p>
                 </div>
               )}
               {resulttype == "script" && (
-                <div className="w-full h-[400px] overflow-auto px-4 py-4">
-                  This is scrtigdsgds
+                <div className="w-full h-[500px] overflow-auto px-4 py-4 text-justify">
+                  {script}
                 </div>
               )}
               <div className="flex justify-between mt-2 items-center">
                 <div className="font-semibold mt-2 ml-2">
                   {" "}
-                  2 Sentences. 50 words
+                  {stats[0]} Sentences. {stats[1]} words
                 </div>
                 <div className="flex">
                   
-                  <p className="border-2 rounded-2xl px-2 border-black cursor-pointer bg-gray-200 hover:bg-[#38f034] hover:text-white">Download in PDF</p>
-                  <p className="border-2 rounded-2xl px-2 mx-2 border-black cursor-pointer bg-gray-200 hover:bg-[#38f034] hover:text-white">Download in Word</p>
+                  <p className="border-2 rounded-2xl px-2 border-black cursor-pointer bg-gray-200 hover:bg-[#38f034] hover:text-white" >Save</p>
+                  <p className="border-2 rounded-2xl px-2 mx-2 border-black cursor-pointer bg-gray-200 hover:bg-[#38f034] hover:text-white">Download in PDF</p>
                 </div>
               </div>
             </div>
@@ -327,7 +372,11 @@ export default function VideoSummarizer() {
             </video>
           </div> */}
         </div>
+        <LoadingModal state={loading}/>
       </div>
+      {error && <MessageModal message={errormess} onsubmit={seterror} ></MessageModal>
+
+      }
     </div>
   );
 }

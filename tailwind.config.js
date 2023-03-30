@@ -6,6 +6,9 @@ module.exports = {
   ],
   theme: {
     extend: {},
+    fontFamily:{
+      urdu:['Noto Nastaliq Urdu','serif']
+    }
   },
   plugins: [],
 }
