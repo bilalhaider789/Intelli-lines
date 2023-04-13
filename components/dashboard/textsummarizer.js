@@ -79,7 +79,6 @@ export default function TextSummarizer() {
     doc.text( 15, 120, "Date of Creation : "+ currentDate.toDateString())
     doc.text( 15, 135, "Time of Creation : "+ currentTime)
     doc.text( 15, 150, "Keywords : "+ keywords.join(', '))
-    var longText= "my name is bilal my name is bilalmy name is bilal my name is bilal my name is bilal my name is bilal my name is bilal my name is bilal my name is bilal my name is bilal my name is bilal my name is bilal my name is bilal my name is bilal my name is bilalmy name is bilalv my name is bilal v v vvv my name is bilal my name is bilal my name is bilalmy name is bilalmy name is bilalmy name is bilalmy name is bilalmy name is bilalmy name is bilalmy name is bilalmy name is bilal my name is bilal my name is bilalmy name is bilal my name is bilal my name is bilal my name is bilal my name is bilal my name is bilal my name is bilal my name is bilal my name is bilal my name is bilal my name is bilal my name is bilal my name is bilalmy name is bilalv my name is bilal v v vvv my name is bilal my name is bilal my name is bilalmy name is bilalmy name is bilalmy name is bilalmy name is bilalmy name is bilalmy name is bilalmy name is bilalmy name is bilal my name is bilal my name is bilalmy name is bilal my name is bilal my name is bilal my name is bilal my name is bilal my name is bilal my name is bilal my name is bilal my name is bilal my name is bilal my name is bilal my name is bilal my name is bilalmy name is bilalv my name is bilal v v vvv my name is bilal my name is bilal my name is bilalmy name is bilalmy name is bilalmy name is bilalmy name is bilalmy name is bilalmy name is bilalmy name is bilalmy name is bilal my name is bilal my name is bilalmy name is bilal my name is bilal my name is bilal my name is bilal my name is bilal my name is bilal my name is bilal my name is bilal my name is bilal my name is bilal my name is bilal my name is bilal my name is bilalmy name is bilalv my name is bilal v v vvv my name is bilal my name is bilal my name is bilalmy name is bilalmy name is bilalmy name is bilalmy name is bilalmy name is bilalmy name is bilalmy name is bilalmy name is bilal my name is bilal my name is bilalmy name is bilal my name is bilal my name is bilal my name is bilal my name is bilal my name is bilal my name is bilal my name is bilal my name is bilal my name is bilal my name is bilal my name is bilal my name is bilalmy name is bilalv my name is bilal v v vvv my name is bilal my name is bilal my name is bilalmy name is bilalmy name is bilalmy name is bilalmy name is bilalmy name is bilalmy name is bilalmy name is bilalmy name is bilal "
     const pageWidth = doc.internal.pageSize.getWidth();
     const splitText = doc.splitTextToSize(generated_result, pageWidth-20);
     let cursorY = 170;
@@ -156,6 +155,36 @@ export default function TextSummarizer() {
       seterror(true)
     }
   };
+
+  const savenote=async()=>{
+    setloading(true)  
+    try{
+        
+        var email= localStorage.getItem("email")
+        var content="";
+        if (resultui=="para"){
+            content=generated_result
+        }
+        else{
+            content=generated_points.join(' ')
+        }
+        const response = await fetch(
+          `${process.env.NEXT_PUBLIC_NODE}createnote`,
+          {
+            method: "POST",
+            body: JSON.stringify({ email,type:resultui, keywords, content, language: resultlang }),
+            headers: { "Content-Type": "application/json" },
+          }
+        );
+        const data = await response.json();
+        console.log(data.success);
+        setloading(false)
+      }
+      catch(e){
+        console.log(e)
+        setloading(false)
+      }
+  }
 
   return (
     <div className="bg-blue-100 h-full w-full flex justify-center items-center font-['Poppins']">
@@ -339,7 +368,7 @@ export default function TextSummarizer() {
                   {stats[3]} Sentences. {stats[1]} words
                 </div>
                 <div className="flex ">
-                <p className="border-2 rounded-2xl px-2 mx-2 border-black cursor-pointer bg-gray-200 hover:bg-[#38f034] hover:text-white" onClick={()=>seterror(true)}>
+                <p className="border-2 rounded-2xl px-2 mx-2 border-black cursor-pointer bg-gray-200 hover:bg-[#38f034] hover:text-white" onClick={()=>savenote()}>
                     Save
                   </p>
                   <p className="border-2 rounded-2xl px-2 border-black cursor-pointer bg-gray-200 hover:bg-[#38f034] hover:text-white" onClick={()=>downloadPDF()}>
