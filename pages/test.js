@@ -1,4 +1,3 @@
-import InputRange from "react-input-range";
 import React, { useState } from "react";
 export default function Test(){
     const [files, setFiles] = useState([]);
