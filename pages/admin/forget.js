@@ -121,7 +121,7 @@ export default function Auth() {
 
                 <button
                   className=" text-[#327FD0]  hover:text-green-600 mt-[3%] underline"
-                  onClick={(e) => router.replace("/auth")}
+                  onClick={(e) => {setloading(true);router.replace("/admin/login")}}
                 >
                   Back to Sign In
                 </button>

@@ -36,7 +36,7 @@ export default function Dashboard() {
   const [username, setusername] = useState("");
   const [useremail, setuseremail] = useState("");
   const [loading, setloading] = useState(false);
-  const [screen, setscreen] = useState("history");
+  const [screen, setscreen] = useState("video");
 
   useEffect(() => {
 
@@ -218,7 +218,7 @@ export default function Dashboard() {
                   ? { backgroundColor: "#2fcf2c", color: "white" }
                   : {}
               }
-              onClick={() => setscreen("extension")}
+              onClick={() => window.open('https://www.youtube.com/watch?v=p0iPX7SkteI&t=68s&ab_channel=BrutAmerica', '_blank')}
             >
               <MdExtension className="w-10 h-7 mr-2 text-gray-500" />
               Chrome Extension

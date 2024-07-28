@@ -130,17 +130,24 @@ export default function Premium() {
             </div>
             <div className="mx-2 mt-10">
               <div className="flex">
-                <div className="text-[24px] mt-2">✔️</div>
+                <div className="text-[24px] mt-2">❌</div>
                 <div className="ml-2 text-[18px]">
                   {" "}
-                  Video Summarization of upto 30 Minutes Video
+                  Urdu Language Support in Video Summarization
                 </div>
               </div>
               <div className="flex mt-6">
                 <div className="text-[24px] mt-2">✔️</div>
                 <div className="ml-2 text-[18px]">
                   {" "}
-                  Text Summarization of upto 1000 Words
+                  Text Summarization of upto 400 Words
+                </div>
+              </div>
+              <div className="flex mt-6">
+                <div className="text-[24px] mt-2">✔️</div>
+                <div className="ml-2 text-[18px]">
+                  {" "}
+                  Urdu Language Support in Text Summarization
                 </div>
               </div>
               <div className="flex mt-6">
@@ -149,10 +156,6 @@ export default function Premium() {
                   {" "}
                   Scan upto 3 Pages Using OCR
                 </div>
-              </div>
-              <div className="flex mt-6 items-center">
-                <div className="text-[24px]">❌</div>
-                <div className="ml-2 text-[18px] "> Urdu Language Support</div>
               </div>
               <div className="text-[20px] p-2 rounded-lg border-black bg-slate-400 text-center m-8 cursor-pointer">
                 Free
@@ -169,27 +172,31 @@ export default function Premium() {
                 <div className="text-[24px] mt-2">✔️</div>
                 <div className="ml-2 text-[18px]">
                   {" "}
-                  Video Summarization of upto 1 hour Video
+                  Urdu Language Support in Video Summarization
                 </div>
               </div>
               <div className="flex mt-6">
                 <div className="text-[24px] mt-2">✔️</div>
                 <div className="ml-2 text-[18px]">
                   {" "}
-                  Text Summarization of upto 2000 Words
+                  Text Summarization of upto 800 Words
                 </div>
               </div>
               <div className="flex mt-6">
                 <div className="text-[24px] mt-2">✔️</div>
                 <div className="ml-2 text-[18px]">
                   {" "}
-                  Scan upto 10 Pages Using OCR
+                  Urdu Language Support in Text Summarization
                 </div>
               </div>
-              <div className="flex mt-6 items-center">
-                <div className="text-[24px]">❌</div>
-                <div className="ml-2 text-[18px] "> Urdu Language Support</div>
+              <div className="flex mt-6">
+                <div className="text-[24px] mt-2">✔️</div>
+                <div className="ml-2 text-[18px]">
+                  {" "}
+                  Scan upto 5 Pages Using OCR
+                </div>
               </div>
+              
               {activatedPackage == "Silver" ? (
                 <div
                   className="text-[20px] p-2 rounded-lg border-black bg-orange-400 text-center mx-8 mt-8 cursor-pointer"
@@ -229,27 +236,28 @@ export default function Premium() {
                 <div className="text-[24px] mt-2">✔️</div>
                 <div className="ml-2 text-[18px]">
                   {" "}
-                  Video Summarization of upto 2 hour Video
+                  Urdu Language Support in Video Summarization
                 </div>
               </div>
               <div className="flex mt-6">
                 <div className="text-[24px] mt-2">✔️</div>
                 <div className="ml-2 text-[18px]">
                   {" "}
-                  Text Summarization of upto 5000 Words
-                </div>
-              </div>
-              <div className="flex mt-6">
-                <div className="text-[24px] mt-2">✔️</div>
-                <div className="ml-2 text-[18px]">
-                  {" "}
-                  Scan upto 20 Pages Using OCR
+                  Text Summarization of upto 1200 Words
                 </div>
               </div>
               <div className="flex mt-6 items-center">
                 <div className="text-[24px]">✔️</div>
-                <div className="ml-2 text-[18px] "> Urdu Language Support</div>
+                <div className="ml-2 text-[18px] "> Urdu Language Support in Text Summarization</div>
               </div>
+              <div className="flex mt-6">
+                <div className="text-[24px] mt-2">✔️</div>
+                <div className="ml-2 text-[18px]">
+                  {" "}
+                  Scan upto 7 Pages Using OCR
+                </div>
+              </div>
+              
               {activatedPackage == "Gold" ? (
                 <div
                   className="text-[20px] p-2 rounded-lg border-black bg-orange-400 text-center mx-8 mt-8 cursor-pointer"

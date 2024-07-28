@@ -17,6 +17,8 @@ import { FaUserFriends } from "react-icons/fa";
 import LoadingModal from "../../../components/others/LoadingModal";
 import Users from "../../../components/admin_Dashboard/Users";
 import AddUsers from "../../../components/admin_Dashboard/AddUser";
+import Subscriptions from "../../../components/admin_Dashboard/Subscriptions";
+import Settings from "../../../components/admin_Dashboard/Settings";
 
 export default function adminDashboard() {
 
@@ -24,10 +26,19 @@ export default function adminDashboard() {
   const { data: session, status } = useSession();
   const [drop, setdrop] = useState(false);
   const [side, setside] = useState(true);
-  const [username, setusername] = useState("");
-  const [useremail, setuseremail] = useState("");
+  const [adminname, setadminname] = useState("");
+  const [adminemail, setadminemail] = useState("");
   const [loading, setloading] = useState(false);
-  const [screen, setscreen] = useState("adduser");
+  const [screen, setscreen] = useState("subscriptions");
+  
+
+  useEffect(() => {
+
+    setadminemail(localStorage.getItem("adminemail"));
+    setadminname(localStorage.getItem("adminname"));
+    
+  },[]);
+
 
 
 
@@ -56,17 +67,15 @@ export default function adminDashboard() {
         <div className="mr-8 ">
           <div className="flex">
             <div className="mt-3 text-[20px] font-[poppins] font-semibold">
-              {username}
+              {adminname}
             </div>
             <IconButton
               className=" h-12 "
-              onMouseEnter={() => setdrop(true)}
-              onMouseLeave={() => setdrop(false)}
             >
               <MdPersonOutline className="fill-black h-20 w-12" />
             </IconButton>
           </div>
-          {drop && (
+          {/* {drop && (
             <div
               className="absolute text-[18px]  bg-white rounded-xl right-4 flex flex-col justify-center px-4 py-4 border-2 z-10"
               onMouseEnter={() => setdrop(true)}
@@ -97,7 +106,7 @@ export default function adminDashboard() {
                 Logout
               </div>
             </div>
-          )}
+          )} */}
         </div>
       </div>
       <div className="  w-screen h-screen pt-10 mx-auto grid lg:grid-cols-6">
@@ -122,7 +131,7 @@ export default function adminDashboard() {
                   ? { backgroundColor: "#2fcf2c", color: "white" }
                   : {}
               }
-              onClick={() => setscreen("text")}
+              onClick={() => setscreen("subscriptions")}
             >
               <RiPagesLine className="w-10 h-8 mx-5 text-orange-500" />
               Subscriptions
@@ -147,7 +156,7 @@ export default function adminDashboard() {
                   ? { backgroundColor: "#2fcf2c", color: "white" }
                   : {}
               }
-              onClick={() => setscreen("extension")}
+              onClick={() => setscreen("settings")}
             >
               <AiTwotoneSetting className="w-10 h-7 mx-5 text-gray-500" />
               Account Settings
@@ -164,6 +173,8 @@ export default function adminDashboard() {
         >
           {screen == "users" && <Users adduser={()=>{setscreen("adduser");console.log("add button")}}/>}
           {screen=="adduser" && <AddUsers allusers={()=>setscreen("users")}/>}
+          {screen=="subscriptions" && <Subscriptions/>}
+          {screen=="settings" && <Settings onchange={setadminname} />}
           
         </div>
       </div>

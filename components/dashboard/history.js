@@ -105,7 +105,7 @@ export default function History() {
           {
             method: "POST",
             body: JSON.stringify({
-              email: "bilalhaider1311@gmail.com",
+              email: email,
             }),
             headers: { "Content-Type": "application/json" },
           }

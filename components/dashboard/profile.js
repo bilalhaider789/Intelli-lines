@@ -22,10 +22,14 @@ export default function Profile(props){
   const [passmodal,setpassmodal]=useState(false)
   const [editpass,seteditpass]= useState("")
   const [visible,setvisible]=useState(false)
+  const [userpacakge,setuserpackage]=useState("")
+  const [expiredate, setexpiredate]=useState("")
 
   useEffect(()=>{
     setuseremail(localStorage.getItem("email"))
     setusername(localStorage.getItem("username"))
+    setuserpackage(localStorage.getItem("userpackage"))
+    setexpiredate(localStorage.getItem("userexpiry"))
   })
 
   const changepassword=async()=>{
@@ -83,7 +87,7 @@ export default function Profile(props){
                       </div>
                       <div>
                         <p className="font-semibold text-[22px]">Subscription</p>
-                        <p>Free</p>
+                        <p>{userpacakge}</p>
                       </div>
                     </div>
                     <div className="py-10 lg:col-span-1">
@@ -97,8 +101,18 @@ export default function Profile(props){
                     <div className="py-10 lg:col-span-2">
                       <div>
                         <p className="font-semibold text-[22px]">Current Plan</p>
-                        <p>Free Basic Plan</p>
-                        <p className="text-[16px] text-gray-600">Valid forever</p>
+                        {userpacakge=="free" && <div>
+                          <p>Free Basic Plan</p>
+                          <p className="text-[16px] text-gray-600">Valid forever</p>
+                        </div>}
+                        {userpacakge=="Silver" && <div>
+                          <p>Silver Plan</p>
+                          <p className="text-[16px] text-gray-600">Expiry Date: {expiredate}</p>
+                        </div>}
+                        {userpacakge=="Gold" && <div>
+                          <p>Gold Plan</p>
+                          <p className="text-[16px] text-gray-600">Expiry Date: {expiredate}</p>
+                        </div>}
                       </div>
                     </div>
                   </div>}

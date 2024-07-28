@@ -6,6 +6,7 @@ import Inputslider from "./inputslider";
 import { Modal } from "../modal";
 import jsPDF from "jspdf";
 import { MessageModal } from "../others/MessageModal";
+import { PackageModel } from "../others/PackageModel";
 
 export default function TextSummarizer() {
   const [sumtype, setsumtype] = useState("key");
@@ -25,7 +26,22 @@ export default function TextSummarizer() {
   const [stats, setstats]=useState([0,0,0,0,0,0])
   const [errormess, seterrormess]=useState("")
   const [error, seterror]=useState(false)
+  const [packageError,setpackageError]=useState(false)
+  const [packagemess, setpackagemess]=useState("")
   
+
+  const copy=()=>{
+    if (resultui=="para"){
+      navigator.clipboard.writeText(generated_result);
+    }
+    if (resultui=="key"){
+      let text= generated_points.join('\n')
+        navigator.clipboard.writeText(text);
+    }
+  
+  }
+
+
   const checkMistakes=async()=>{
     try {
       setloading(true)
@@ -49,17 +65,20 @@ export default function TextSummarizer() {
       }
   }
 
-  const replace=(wrong, correct)=>{
-      console.log(wrong)
-      console.log(correct)
-      setmistakes(mistakes.filter(e=> e.wrong!=wrong))
-      const changedcontent= content.replace(wrong,correct)
-      setcontent(changedcontent)
-  }
-
   const replaceAll=()=>{
+    let demotext=content
+    mistakes.filter(e=>{
+        demotext=demotext.replace(e.wrong,e.correct)
+    })
+    setcontent(demotext)
     setmistakes([])
   }
+
+  const replace=(wrong, correct)=>{
+    setmistakes(mistakes.filter(e=> e.wrong!=wrong))
+    const changedcontent= content.replace(wrong,correct)
+    setcontent(changedcontent)
+}
 
   const changeRatio = (e) => {
     setsumRatio(e);
@@ -80,7 +99,8 @@ export default function TextSummarizer() {
     doc.text( 15, 135, "Time of Creation : "+ currentTime)
     doc.text( 15, 150, "Keywords : "+ keywords.join(', '))
     const pageWidth = doc.internal.pageSize.getWidth();
-    const splitText = doc.splitTextToSize(generated_result, pageWidth-20);
+    let result= resultui=="para"?generated_result:generated_points
+    const splitText = doc.splitTextToSize(result, pageWidth-20);
     let cursorY = 170;
     for (let i = 0; i < splitText.length; i++) {
       if (cursorY > doc.internal.pageSize.getHeight() - 40) {
@@ -97,6 +117,23 @@ export default function TextSummarizer() {
     setgenerated_result("");
     setresultype("generate");
     console.log(sumRatio / 100);
+    console.log(inputwords)
+    let currentpackage= localStorage.getItem("userpackage")
+    if(inputwords>400 && currentpackage=="free"){
+      setpackageError(true)
+      setpackagemess("Can't summarize more than 400 words in Basic Package")
+      return null
+    }
+    if(inputwords>800 && currentpackage=="Silver"){
+      setpackageError(true)
+      setpackagemess("Can't summarize more than 800 words in Silver Package")
+      return null
+    }
+    if(inputwords>1200){
+      setpackageError(true)
+      setpackagemess("Can't summarize more than 1200 words")
+      return null
+    }
     if (inputwords > 100){
     try {
       setloading(true)
@@ -368,6 +405,9 @@ export default function TextSummarizer() {
                   {stats[3]} Sentences. {stats[1]} words
                 </div>
                 <div className="flex ">
+                <p className="border-2 rounded-2xl px-2  border-black cursor-pointer bg-gray-200 hover:bg-[#38f034] hover:text-white" onClick={()=>copy()}>
+                    Copy
+                  </p>
                 <p className="border-2 rounded-2xl px-2 mx-2 border-black cursor-pointer bg-gray-200 hover:bg-[#38f034] hover:text-white" onClick={()=>savenote()}>
                     Save
                   </p>
@@ -404,7 +444,7 @@ export default function TextSummarizer() {
                 <div className="text-[18px] font-semibold mt-5">
                   Spelling Mistakes :
                 </div>
-                <div className="text-[18px] font-semibold mt-5 mr-8 cursor-pointer hover:text-green-500" onClick={replaceAll}>
+                <div className="text-[18px] font-semibold mt-5 mr-8 cursor-pointer hover:text-green-500" onClick={()=>replaceAll()}>
                   Replace All
                 </div>
               </div>
@@ -434,11 +474,15 @@ export default function TextSummarizer() {
         </div>
       </div>
       <LoadingModal state={loading}></LoadingModal>
+
+
+      
       {cmodal && <Modal onsubmit={setcmodal}>
         
         </Modal>}
       {error && <MessageModal message="Enter more than 100 words" onsubmit={seterror} ></MessageModal>
-
+      }
+      {packageError && <PackageModel message={packagemess} onsubmit={setpackageError} ></PackageModel>
       }
     </div>
   );

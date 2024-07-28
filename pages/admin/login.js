@@ -46,6 +46,10 @@ export default function login() {
           const data = await response.json();
           
           if(data.success==true){
+            localStorage.setItem("adminname",data.name)
+            localStorage.setItem("adminemail",data.email)
+            localStorage.setItem("usertype","admin")
+
             router.replace({pathname :"/admin/dashboard"})
           }
           if(data.success==false){
@@ -146,7 +150,7 @@ export default function login() {
                       }}
                     />
                     <div className="flex justify-end text-red-600 hover:text-green-700">
-                      <button onClick={(e) => router.push("/auth/forget")}>
+                      <button onClick={(e) => {setloading(true),router.push("/admin/forget")}}>
                         Forgot Password ?
                       </button>
                     </div>

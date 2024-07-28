@@ -1,5 +1,5 @@
 
-export function MessageModal(props) {
+export function PackageModel(props) {
   
     let message= props.message
     
@@ -15,7 +15,7 @@ export function MessageModal(props) {
                   className="bg-[#14af4f] h-10 text-white rounded-xl w-[150px] hover:bg-[#32dd66] text-xl mt-5"
                   onClick={()=> props.onsubmit(false)}
                 >
-                  Try Again
+                  Okay
                 </button>
           </div>
       </div>
